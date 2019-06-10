@@ -6,6 +6,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { CustomFormsModule } from 'ng2-validation';
 
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
@@ -23,6 +24,9 @@ import { AuthGuardService } from './auth-guard.service';
 import { UserService } from './user.service';
 import { AdminAuthGuardService } from './admin-auth-guard.service';
 import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { CategoryService } from './category.service';
+import { FormsModule } from '@angular/forms';
+import { ProductService } from './product.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,8 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
   ],
   imports: [
     BrowserModule,
+    CustomFormsModule,
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
@@ -61,6 +67,11 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
         canActivate: [AuthGuardService, AdminAuthGuardService]
       },
       {
+        path: 'admin/products/:id',
+        component: ProductFormComponent,
+        canActivate: [AuthGuardService, AdminAuthGuardService]
+      },
+      {
         path: 'admin/orders',
         component: AdminOrdersComponent,
         canActivate: [AuthGuardService, AdminAuthGuardService]
@@ -72,9 +83,11 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
   ],
   providers: [
     AngularFireAuth,
+    ProductService,
     AuthGuardService,
     UserService,
-    AdminAuthGuardService
+    AdminAuthGuardService,
+    CategoryService
   ],
   bootstrap: [AppComponent]
 })
